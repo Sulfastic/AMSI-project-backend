@@ -6,9 +6,9 @@ import eu.needtocode.model.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
+import java.util.Collection;
 
-public class ExistingUserValidator implements ContextualValidator<List<User>, AddUserRQ> {
+public class ExistingUserValidator implements ContextualValidator<Collection<User>, AddUserRQ> {
 
     static final String GIVEN_EMAIL_ADDRESS_IS_ALREADY_TAKEN = "Given email address is already taken.";
     static final String USER_WITH_GIVEN_NICKNAME_ALREADY_EXISTS = "User with given nickname already exists.";
@@ -16,7 +16,7 @@ public class ExistingUserValidator implements ContextualValidator<List<User>, Ad
     private static final Logger LOGGER = LoggerFactory.getLogger(ExistingUserValidator.class);
 
     @Override
-    public void validate(List<User> users, AddUserRQ addUserRQ) {
+    public void validate(Collection<User> users, AddUserRQ addUserRQ) {
 
         boolean invalidEmail = users.stream().anyMatch(user -> user.getEmail().equals(addUserRQ.getEmail()));
         if (invalidEmail) {

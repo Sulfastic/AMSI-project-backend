@@ -9,6 +9,8 @@ public final class ApplicationMessages {
 
     public static final String CONFIRMATION_EMAIL_SUBJECT = "Confirm you registration!";
     public static final String CONFIRMATION_EMAIL_CONTENT = "Dear, %s! \n\nPlease confirm you registration by clicking in following link: http://localhost:8080/users/activate/%s";
+    public static final String LOGIN_SUCCESSFULLY = "User %s logged successfully!";
+    public static final String CANNOT_LOGIN_USER = "Cannot login user: %s. Check your credentials.";
 
     private ApplicationMessages() {
     }
