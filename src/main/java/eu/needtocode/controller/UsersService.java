@@ -14,6 +14,11 @@ import javax.mail.Message;
 import java.util.Collection;
 import java.util.Optional;
 
+import static eu.needtocode.controller.LoginStatus.INCORRECT_PASSWORD;
+import static eu.needtocode.controller.LoginStatus.NOT_ACTIVE;
+import static eu.needtocode.controller.LoginStatus.NO_USER;
+import static eu.needtocode.controller.LoginStatus.SUCCESS;
+
 public class UsersService {
 
     private final UserDao userDao;
@@ -64,10 +69,24 @@ public class UsersService {
         return false;
     }
 
-    public boolean login(LoginUserRQ loginUserRQ) {
-        return getAllUsers()
+    public LoginStatus login(LoginUserRQ loginUserRQ) {
+        Optional<User> userOptional = getAllUsers()
                 .stream()
-                .anyMatch(user -> user.getNickname().equals(loginUserRQ.getNickname())
-                        && user.getPassword().equals(loginUserRQ.getPassword()));
+                .filter(user -> user.getNickname().equals(loginUserRQ.getNickname()))
+                .findFirst();
+
+        if (!userOptional.isPresent()) {
+            return NO_USER;
+        } else {
+            User user = userOptional.get();
+            if (user.isNotActive()) {
+                return NOT_ACTIVE;
+            }
+            if (!user.getPassword().equals(loginUserRQ.getPassword())) {
+                return INCORRECT_PASSWORD;
+            }
+            return SUCCESS;
+        }
+
     }
 }
